@@ -5,9 +5,7 @@
 
 <template>
   <div>
-    <hr />
     <router-view></router-view>
-    <hr />
   </div>
 </template>
 
