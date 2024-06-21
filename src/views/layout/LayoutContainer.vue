@@ -1,6 +1,7 @@
 <script setup>
 import {
   Management,
+  Connection,
   Promotion,
   UserFilled,
   User,
@@ -9,7 +10,20 @@ import {
   SwitchButton,
   CaretBottom
 } from '@element-plus/icons-vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores'
 // import avatar from '@/assets/default.png'
+const router = useRouter()
+const useStore = useUserStore()
+
+const handleCommand = (key) => {
+  if (key === 'logout') {
+    router.push('/login') //退出操作
+    useStore.removeToken()
+  } else {
+    router.push(`/user/${key}`)
+  }
+}
 </script>
 
 <template>
@@ -26,6 +40,10 @@ import {
         <el-menu-item index="/order/list">
           <el-icon><Management /></el-icon>
           <span>商家列表</span>
+        </el-menu-item>
+        <el-menu-item index="/order/cart">
+          <el-icon><Connection /></el-icon>
+          <span>购物车</span>
         </el-menu-item>
         <el-menu-item index="/order/manage">
           <el-icon><Promotion /></el-icon>
@@ -54,7 +72,7 @@ import {
     <el-container>
       <el-header class="header-icons" height="80px">
         <div></div>
-        <el-dropdown placement="bottom-end">
+        <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
             <el-avatar />
             <el-icon><CaretBottom /></el-icon>

@@ -15,6 +15,10 @@ const router = createRouter({
       redirect: '/order/list',
       children: [
         {
+          path: '/order/cart',
+          component: () => import('@/views/order/OrderCart.vue')
+        },
+        {
           path: '/order/manage',
           component: () => import('@/views/order/OrderManage.vue')
         },
