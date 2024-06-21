@@ -1,3 +1,4 @@
+import { useUserStore } from '@/stores'
 import {
   createRouter,
   createWebHistory
@@ -11,15 +12,15 @@ const router = createRouter({
     {
       path: '/',
       component: () => import('@/views/layout/LayoutContainer.vue'),
-      redirect: '/article/manage',
+      redirect: '/order/list',
       children: [
         {
-          path: '/article/manage',
-          component: () => import('@/views/article/ArticleManage.vue')
+          path: '/order/manage',
+          component: () => import('@/views/order/OrderManage.vue')
         },
         {
-          path: '/article/channel',
-          component: () => import('@/views/article/ArticleChannel.vue')
+          path: '/order/list',
+          component: () => import('@/views/order/OrderList.vue')
         },
         {
           path: '/user/profile',
@@ -39,5 +40,9 @@ const router = createRouter({
 })
 
 // 添加登陆访问拦截
+router.beforeEach((to) => {
+  const useStore = useUserStore()
+  if (!useStore.token && to.path !== '/login') return '/login'
+})
 
 export default router

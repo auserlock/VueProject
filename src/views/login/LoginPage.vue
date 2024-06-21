@@ -1,13 +1,14 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
-// import { userRegisterService, userLoginervice } from '@/api/user'
+import { userRegisterService, userLoginService } from '@/api/user'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
-// import { useUserStore } from '@/stores'
+import { useUserStore } from '@/stores'
 const isRegister = ref(false)
 const form = ref()
 const router = useRouter()
+const useStore = useUserStore()
 
 const formModel = ref({
   userId: '',
@@ -48,23 +49,26 @@ const rules = {
 }
 const register = async () => {
   await form.value.validate()
-  // await userRegisterService({
-  //   userId: formModel.value.userId,
-  //   password: formModel.value.password
-  // })
-  ElMessage.success('注册成功')
+  await userRegisterService({
+    userId: formModel.value.userId,
+    password: formModel.value.password
+  })
+  alert('注册成功')
   // 切换到登录
   isRegister.value = false
 }
 
 const login = async () => {
   await form.value.validate()
-  // const res = await userLoginService({
-  //   userId: formModel.value.userId,
-  //   password: formModel.value.password
-  // })
-  // console.log(res)
-  console.log('登录')
+  const res = await userLoginService({
+    userId: formModel.value.userId,
+    password: formModel.value.password
+  })
+  console.log(res)
+
+  useStore.setToken(res.data.data)
+  ElMessage.success('登陆成功')
+
   // 切换到主页面
   router.push('./')
 }
@@ -199,7 +203,6 @@ watch(isRegister, () => {
   border-radius: 0 20px 20px 20px;
   background-color: #fff;
   .bg {
-    // background: url('@/assets/name.png') no-repeat center center / 500px auto;
     background-color: #f5f1f3;
   }
   .form {

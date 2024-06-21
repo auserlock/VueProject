@@ -23,13 +23,13 @@ import {
         text-color="#fff"
         router
       >
-        <el-menu-item index="/article/channel">
+        <el-menu-item index="/order/list">
           <el-icon><Management /></el-icon>
-          <span>文章分类</span>
+          <span>商家列表</span>
         </el-menu-item>
-        <el-menu-item index="/article/manage">
+        <el-menu-item index="/order/manage">
           <el-icon><Promotion /></el-icon>
-          <span>文章管理</span>
+          <span>订单管理</span>
         </el-menu-item>
         <el-sub-menu index="/user">
           <template #title>
@@ -52,8 +52,8 @@ import {
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header>
-        <div>黑马程序员：<strong>小帅鹏</strong></div>
+      <el-header class="header-icons" height="80px">
+        <div></div>
         <el-dropdown placement="bottom-end">
           <span class="el-dropdown__box">
             <el-avatar />
@@ -77,10 +77,10 @@ import {
           </template>
         </el-dropdown>
       </el-header>
-      <el-main>
+      <el-main class="main-style">
         <router-view></router-view>
       </el-main>
-      <el-footer>大事件 ©2023 Created by 黑马程序员</el-footer>
+      <el-footer>CausedByEating ©2024 Created</el-footer>
     </el-container>
   </el-container>
 </template>
@@ -88,15 +88,19 @@ import {
 <style lang="scss" scoped>
 .layout-container {
   height: 100vh;
+  background-color: #f5f1f3;
   .el-aside {
     background-color: #232323;
     &__logo {
       height: 120px;
-      background: url('@/assets/logo.png') no-repeat center / 120px auto;
+      // background: url('@/assets/logo.jpeg') no-repeat center / cover;
     }
     .el-menu {
       border-right: none;
     }
+  }
+  .header-icons {
+    background: url('@/assets/name.png') no-repeat center center / 400px auto;
   }
   .el-header {
     background-color: #fff;
