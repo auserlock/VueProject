@@ -1,9 +1,20 @@
 <script setup>
-import { businessGetByTypeService } from '@/api/business'
-const fn = async () => {
-  const res = await businessGetByTypeService(1)
-  console.log(res.data.data)
-}
+import { businessGetListService } from '@/api/business'
+import { useBusinessStore } from '@/stores'
+import { onMounted } from 'vue'
+const useStore = useBusinessStore()
+
+onMounted(async () => {
+  try {
+    const res = await businessGetListService()
+    res.data.data.forEach((item) => {
+      useStore.setBusiness(item)
+    })
+  } catch (error) {
+    console.error('Failed to fetch business list:', error)
+  }
+})
+const fn = () => {}
 </script>
 
 <template>

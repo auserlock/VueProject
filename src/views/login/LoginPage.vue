@@ -18,7 +18,7 @@ const formModel = ref({
 const rules = {
   userId: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
-    { min: 6, message: '用户Id包含至少6位字符', trigger: 'blur' }
+    { min: 5, message: '用户Id包含至少5位字符', trigger: 'blur' }
   ],
   password: [
     { required: true, message: '请输入密码', trigger: 'blur' },
@@ -64,7 +64,7 @@ const login = async () => {
     userId: formModel.value.userId,
     password: formModel.value.password
   })
-  console.log(res)
+  // console.log(res)
 
   useStore.setToken(res.data.data)
   ElMessage.success('登陆成功')

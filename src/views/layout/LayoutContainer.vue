@@ -118,7 +118,7 @@ const handleCommand = (key) => {
     }
   }
   .header-icons {
-    background: url('@/assets/name.png') no-repeat center center / 400px auto;
+    // background: url('@/assets/name.png') no-repeat center center / 400px auto;
   }
   .el-header {
     background-color: #fff;
