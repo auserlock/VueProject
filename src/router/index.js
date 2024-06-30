@@ -23,8 +23,13 @@ const router = createRouter({
           component: () => import('@/views/order/OrderManage.vue')
         },
         {
-          path: '/order/list',
+          path: '/order/list/',
           component: () => import('@/views/order/OrderList.vue')
+        },
+        {
+          path: '/order/list/:id',
+          component: () =>
+            import('@/views/order/component/category/CategoryIndex.vue')
         },
         {
           path: '/user/profile',

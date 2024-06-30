@@ -9,7 +9,7 @@ const businessStore = useBusinessStore()
   <div class="home-category">
     <ul class="menu">
       <li v-for="(item, index) in useTypeStore.BusinessTypeInfo" :key="item">
-        <RouterLink to="/">{{ item }}</RouterLink>
+        <RouterLink :to="`/order/list/100${index}`">{{ item }}</RouterLink>
         <!-- 弹层layer位置 -->
         <div class="layer">
           <h4>分类推荐 <small>根据您的消费或浏览记录推荐</small></h4>
