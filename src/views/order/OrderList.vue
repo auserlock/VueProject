@@ -1,26 +1,31 @@
 <script setup>
-import { businessGetListService } from '@/api/business'
+import { businessGetByTypeService } from '@/api/business'
 import { useBusinessStore } from '@/stores'
 import { onMounted } from 'vue'
-const useStore = useBusinessStore()
+const businessStore = useBusinessStore()
 
+import BusinessCategory from './component/BusinessCategory.vue'
 import BusinessBanner from './component/BusinessBanner.vue'
 
 onMounted(async () => {
-  if (useStore.BusinessInfo.length == 0) {
-    try {
-      const res = await businessGetListService()
-      res.data.data.forEach((item) => {
-        useStore.setBusiness(item)
-      })
-    } catch (error) {
-      console.error('Failed to fetch business list:', error)
+  if (businessStore.hasFetched == false) {
+    for (let i = 1; i <= 10; i++) {
+      try {
+        const res = await businessGetByTypeService(i)
+        res.data.data.forEach((item) => {
+          businessStore.setBusiness(i, item)
+        })
+      } catch (error) {
+        console.error('Failed to fetch business list:', error)
+      }
     }
+    businessStore.setHasFetched()
   }
 })
 </script>
 
 <template>
+  <BusinessCategory />
   <BusinessBanner />
 </template>
 

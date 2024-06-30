@@ -12,14 +12,17 @@ import {
 } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
+import { useBusinessStore } from '@/stores'
 // import avatar from '@/assets/default.png'
 const router = useRouter()
 const useStore = useUserStore()
+const businessStore = useBusinessStore()
 
 const handleCommand = (key) => {
   if (key === 'logout') {
     router.push('/login') //退出操作
     useStore.removeToken()
+    businessStore.removeAll() //清空business数据
   } else {
     router.push(`/user/${key}`)
   }
