@@ -16,7 +16,7 @@
   height: 600px;
   position: absolute;
   left: 23%;
-  top: 17.8%;
+  top: 21.1%;
   z-index: 98;
 
   img {

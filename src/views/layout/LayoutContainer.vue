@@ -13,10 +13,13 @@ import {
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import { useBusinessStore } from '@/stores'
+import { useBusinessTypeStore } from '@/stores'
+import { RouterLink } from 'vue-router'
 // import avatar from '@/assets/default.png'
 const router = useRouter()
 const useStore = useUserStore()
 const businessStore = useBusinessStore()
+const businessTypeStore = useBusinessTypeStore()
 
 const handleCommand = (key) => {
   if (key === 'logout') {
@@ -87,8 +90,20 @@ const handleCommand = (key) => {
       </el-menu>
     </el-aside>
     <el-container>
-      <el-header class="header-icons" height="120px">
-        <div></div>
+      <el-header class="header-icons" height="150px">
+        <ul class="app-header-nav">
+          <li class="home">
+            <RouterLink to="/">首页</RouterLink>
+          </li>
+          <li
+            v-for="(item, index) in businessTypeStore.BusinessTypeInfo"
+            :key="item"
+          >
+            <RouterLink active-class="active" :to="`/order/list/100${index}`">{{
+              item
+            }}</RouterLink>
+          </li>
+        </ul>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
             <el-avatar />
@@ -124,7 +139,7 @@ const handleCommand = (key) => {
 
 <style lang="scss" scoped>
 .layout-container {
-  height: 100vh;
+  height: 200vh;
   background-color: #f5f1f3;
 
   .el-aside {
@@ -141,7 +156,36 @@ const handleCommand = (key) => {
   }
 
   .header-icons {
-    background: url('@/assets/name.png') no-repeat center center / 400px auto;
+    background: url('@/assets/name.png') no-repeat center top / 400px auto;
+    .app-header-nav {
+      display: flex;
+      list-style: none;
+      padding: 20px;
+      margin: 100px 0 0 0;
+    }
+    .app-header-nav a {
+      text-decoration: none;
+      color: black;
+    }
+
+    .app-header-nav a:hover {
+      color: #0caa5b;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 10px;
+    }
+    .app-header-nav li {
+      margin-right: 46px;
+      margin-left: 20px;
+      font-size: 18px;
+      text-align: center;
+      .active {
+        color: #0caa5b;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 10px;
+      }
+    }
   }
 
   .el-header {

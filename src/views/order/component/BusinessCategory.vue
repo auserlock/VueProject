@@ -114,6 +114,8 @@ const businessStore = useBusinessStore()
 
               &:hover {
                 background: #e3f9f4;
+                height: 85%;
+                width: 94%;
               }
 
               img {
