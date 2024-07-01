@@ -15,11 +15,11 @@ onMounted(async () => {
         res.data.data.forEach((item) => {
           businessStore.setBusiness(i, item)
         })
+        businessStore.setHasFetched()
       } catch (error) {
         console.error('Failed to fetch business list:', error)
       }
     }
-    businessStore.setHasFetched()
   }
 })
 </script>

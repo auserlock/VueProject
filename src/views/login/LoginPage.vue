@@ -3,12 +3,15 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
 import { userRegisterService, userLoginService } from '@/api/user'
 import { useRouter } from 'vue-router'
+import { useBusinessStore } from '@/stores'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '@/stores'
+import { onMounted } from 'vue'
 const isRegister = ref(false)
 const form = ref()
 const router = useRouter()
 const useStore = useUserStore()
+const businessStore = useBusinessStore()
 
 const formModel = ref({
   userId: '',
@@ -80,6 +83,11 @@ watch(isRegister, () => {
     password: '',
     repassword: ''
   }
+})
+
+onMounted(() => {
+  useStore.removeToken()
+  businessStore.removeAll()
 })
 </script>
 

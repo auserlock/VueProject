@@ -1,4 +1,5 @@
 <script setup>
+//商家列表为空时可能出错
 defineProps({
   goods: {
     type: Object,
@@ -8,7 +9,6 @@ defineProps({
 
 import { useRoute } from 'vue-router'
 const route = useRoute()
-console.log(route.params.id)
 </script>
 <!-- <RouterLink :to="`/order/list/100${index}`">{{ item }}</RouterLink> -->
 <template>

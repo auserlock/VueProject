@@ -20,7 +20,7 @@ const businessStore = useBusinessStore()
                 : []"
               :key="i.businessId"
             >
-              <RouterLink to="/">
+              <RouterLink :to="`/order/list/100${index}/${i.businessId}`">
                 <img :src="i.businessImg" alt="" />
                 <div class="info">
                   <p class="name ellipsis-2">{{ i.businessName }}</p>
