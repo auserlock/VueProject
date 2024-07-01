@@ -32,6 +32,10 @@ const router = createRouter({
             import('@/views/order/component/category/CategoryIndex.vue')
         },
         {
+          path: '/order/list/:id/:listID',
+          component: () => import('@/views/order/component/GoodsDetails.vue')
+        },
+        {
           path: '/user/profile',
           component: () => import('@/views/user/UserProfile.vue')
         },

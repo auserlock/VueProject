@@ -2,6 +2,10 @@
 import { useRoute } from 'vue-router'
 import { useBusinessTypeStore } from '@/stores'
 const useTypeStore = useBusinessTypeStore()
+import { useBusinessStore } from '@/stores'
+const businessStore = useBusinessStore()
+
+import GoosItem from '../GoosItem.vue'
 
 const route = useRoute()
 </script>
@@ -21,9 +25,34 @@ const route = useRoute()
       </div>
     </div>
   </div>
+  <div class="body">
+    <ul class="goods-list">
+      <li
+        v-for="goods in businessStore.BusinessInfo[
+          parseInt(route.params.id.charAt(3)) + 1
+        ]"
+        :key="goods.businessId"
+      >
+        <GoosItem :goods="goods"></GoosItem>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <style scoped lang="scss">
+.body {
+  .goods-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    text-align: center;
+
+    li {
+      display: block;
+      margin: 0px 30%;
+    }
+  }
+}
 .top-category {
   h3 {
     font-size: 28px;
