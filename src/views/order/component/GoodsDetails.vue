@@ -3,7 +3,7 @@ import { businessGetFoodListService } from '@/api/food'
 import { useRoute } from 'vue-router'
 import { ref, onMounted, computed } from 'vue'
 import { useBusinessTypeStore } from '@/stores'
-import { Plus } from '@element-plus/icons-vue'
+import { Plus, Minus } from '@element-plus/icons-vue'
 const useTypeStore = useBusinessTypeStore()
 const route = useRoute()
 
@@ -23,6 +23,27 @@ const GetFoodList = async () => {
   } catch (error) {
     console.error('Failed to fetch business list:', error)
   }
+}
+
+// const useCart = useCartStore()
+const currentCart = ref({})
+
+const clickButtonPlus = (key) => {
+  if (currentCart.value[key] !== undefined) {
+    currentCart.value[key]++
+  } else {
+    currentCart.value[key] = 1
+  }
+  // console.log(currentCart.value)
+}
+
+const clickButtonMinus = (key) => {
+  if (currentCart.value[key] !== 0) {
+    currentCart.value[key]--
+  } else {
+    currentCart.value[key] = 0
+  }
+  // console.log(currentCart.value)
 }
 
 onMounted(() => {
@@ -61,7 +82,24 @@ onMounted(() => {
           <p class="price ellipsis">￥{{ goods.foodPrice }}</p>
         </div>
         <div class="cart">
-          <el-button type="primary" :icon="Plus" circle="true" class="button" />
+          <el-button
+            type="primary"
+            :circle="true"
+            :icon="Minus"
+            @click="clickButtonMinus(goods.foodId)"
+            v-show="currentCart[goods.foodId] > 0"
+            class="MinusButton"
+          />
+          <div v-show="currentCart[goods.foodId] > 0" class="NumberInput">
+            {{ currentCart[goods.foodId] }}
+          </div>
+          <el-button
+            type="primary"
+            :circle="true"
+            :icon="Plus"
+            @click="clickButtonPlus(goods.foodId)"
+            class="PlusButton"
+          />
         </div>
       </li>
     </ul>
@@ -135,9 +173,36 @@ onMounted(() => {
       }
 
       .cart {
+        display: flex;
         position: relative;
-        left: 200px;
+        left: 150px;
+        height: 100px; /* 确保父元素高度固定 */
+        align-items: center; /* 使用Flexbox布局垂直居中 */
         top: 40%;
+
+        .MinusButton {
+          position: relative;
+          left: -50px;
+        }
+
+        .NumberInput {
+          width: 50px;
+          height: 40px;
+          text-align: center;
+          font-size: 24px;
+          border: 2px solid #007bff;
+          border-radius: 5px;
+          margin: 0 5px;
+          line-height: 40px; /* 确保文字垂直居中 */
+          position: relative;
+          left: -45px;
+        }
+
+        .PlusButton {
+          position: absolute;
+          top: 33px;
+          left: 60px;
+        }
       }
     }
   }

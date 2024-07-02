@@ -2,7 +2,9 @@
 import { businessGetByTypeService } from '@/api/business'
 import { useBusinessStore } from '@/stores'
 import { onMounted } from 'vue'
+// import { getUserInfoService } from '@/api/userInfo'
 const businessStore = useBusinessStore()
+// const userInfoStore = useUserInfoStore()
 
 import BusinessCategory from './component/BusinessCategory.vue'
 import BusinessBanner from './component/BusinessBanner.vue'
@@ -16,6 +18,8 @@ onMounted(async () => {
           businessStore.setBusiness(i, item)
         })
         businessStore.setHasFetched()
+        // const userInfo = await getUserInfoService()
+        // userInfoStore.userInfo = userInfo.data.data
       } catch (error) {
         console.error('Failed to fetch business list:', error)
       }
