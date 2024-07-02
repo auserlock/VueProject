@@ -49,7 +49,12 @@ const router = createRouter({
         }
       ]
     }
-  ]
+  ],
+  scrollBehavior() {
+    return {
+      top: 0
+    }
+  }
 })
 
 // 添加登陆访问拦截

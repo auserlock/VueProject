@@ -13,13 +13,15 @@ const router = useRouter()
 const useStore = useUserStore()
 const businessStore = useBusinessStore()
 
+let isChangeFromRegisterSuccess = false
+
 const formModel = ref({
   userId: '',
   password: '',
   repassword: ''
 })
 const rules = {
-  userId: [
+  userName: [
     { required: true, message: '请输入用户名', trigger: 'blur' },
     { min: 5, message: '用户Id包含至少5位字符', trigger: 'blur' }
   ],
@@ -52,12 +54,15 @@ const rules = {
 }
 const register = async () => {
   await form.value.validate()
-  await userRegisterService({
-    userId: formModel.value.userId,
+  const res = await userRegisterService({
+    userName: formModel.value.userId,
     password: formModel.value.password
   })
-  alert('注册成功')
-  // 切换到登录
+  alert('注册成功：请记住您的ID号')
+  alert(res.data.data)
+  useStore.setId(res.data.data)
+  useStore.setPassword(formModel.value.password)
+  isChangeFromRegisterSuccess = true
   isRegister.value = false
 }
 
@@ -78,16 +83,36 @@ const login = async () => {
 
 // 切换重置表单
 watch(isRegister, () => {
-  formModel.value = {
-    userId: '',
-    password: '',
-    repassword: ''
+  if (isChangeFromRegisterSuccess) {
+    formModel.value = {
+      userId: useStore.id,
+      password: '',
+      repassword: ''
+    }
+    isChangeFromRegisterSuccess = false
+  } else {
+    formModel.value = {
+      userId: '',
+      password: '',
+      repassword: ''
+    }
   }
 })
 
 onMounted(() => {
-  useStore.removeToken()
-  businessStore.removeAll()
+  if (useStore.remStatus) {
+    formModel.value = {
+      userId: useStore.id,
+      password: useStore.password
+    }
+    useStore.removeToken()
+    businessStore.removeAll()
+  } else {
+    useStore.removeToken()
+    useStore.removeId()
+    useStore.removePassword()
+    businessStore.removeAll()
+  }
 })
 </script>
 
@@ -181,7 +206,7 @@ onMounted(() => {
         </el-form-item>
         <el-form-item class="flex">
           <div class="flex">
-            <el-checkbox>记住我</el-checkbox>
+            <el-checkbox v-model="useStore.remStatus">记住我</el-checkbox>
             <el-link type="primary" :underline="false">忘记密码？</el-link>
           </div>
         </el-form-item>

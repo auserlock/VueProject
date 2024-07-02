@@ -9,3 +9,4 @@ export default pinia
 export * from './modules/user'
 export * from './modules/business'
 export * from './modules/type'
+export * from './modules/cart'

@@ -24,6 +24,7 @@ const GetFoodList = async () => {
     console.error('Failed to fetch business list:', error)
   }
 }
+
 onMounted(() => {
   GetFoodList().then((res) => {
     foodList.value = res
@@ -59,7 +60,9 @@ onMounted(() => {
           <p class="desc ellipsis">{{ goods.foodExplain }}</p>
           <p class="price ellipsis">￥{{ goods.foodPrice }}</p>
         </div>
-        <el-button type="primary" :icon="Plus" />
+        <div class="cart">
+          <el-button type="primary" :icon="Plus" circle="true" class="button" />
+        </div>
       </li>
     </ul>
   </div>
@@ -76,6 +79,7 @@ onMounted(() => {
     list-style-type: none;
     padding: 0;
     margin: 0;
+    overflow: hidden;
     text-align: center;
 
     li {
@@ -99,6 +103,7 @@ onMounted(() => {
       .text {
         margin-left: 40px;
         color: black;
+        width: 200px;
 
         p {
           padding-top: 10px;
@@ -110,6 +115,7 @@ onMounted(() => {
         font-weight: bold;
         position: relative;
         top: 0px;
+        left: -20px;
       }
 
       .desc {
@@ -126,6 +132,12 @@ onMounted(() => {
         color: red;
         position: relative;
         top: 0px;
+      }
+
+      .cart {
+        position: relative;
+        left: 200px;
+        top: 40%;
       }
     }
   }
