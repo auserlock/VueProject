@@ -29,11 +29,9 @@ export const ordersGetService = () => {
 // businessId	商家编号	number	是	不可变
 // daId	送货地址编号	number	是
 // orderState	订单状态	number	是
-export const ordersUpdateService = (orderId, businessId, daId, orderState) => {
+export const ordersUpdateService = (orderId, orderState) => {
   return request.put('/orders/update', {
     orderId,
-    businessId,
-    daId,
     orderState
   })
 }

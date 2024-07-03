@@ -3,28 +3,41 @@ import { useRoute } from 'vue-router'
 import { useOrderStore } from '@/stores'
 import { ordersGetService } from '@/api/orders'
 import { onMounted, ref } from 'vue'
+import { useCountDown } from '@/components/CountDown'
 const route = useRoute()
 const orderStore = useOrderStore()
+const { formatTime, start } = useCountDown()
 
-const payInfo = ref({})
+const payInfo = ref(0)
 onMounted(async () => {
-  console.log(route.query.id)
+  start(15 * 1000)
+  payInfo.value = 0
   try {
     const res = await ordersGetService()
     orderStore.setOrders(res.data.data)
   } catch (error) {
     console.error('Failed to fetch orders:', error)
   }
-  for (let i = 0; i < orderStore.orders.length; i++) {
-    if (orderStore.orders[i].orderId == route.query.id) {
-      payInfo.value = orderStore.orders[i]
-      break
+  for (let k = 0; k < route.query.id.length; k++) {
+    for (let i = 0; i < orderStore.orders.length; i++) {
+      if (orderStore.orders[i].orderId == route.query.id[k]) {
+        payInfo.value += orderStore.orders[i].orderTotal
+        break
+      }
     }
   }
+  let queryString = ''
+  if (route.query.id.isArray) {
+    queryString = route.query.id.map((id) => `id=${id}`).join('&')
+  } else {
+    queryString = `id=${route.query.id}`
+  }
+
+  payUrl.value = `http://localhost:5173/payment/success?price=${payInfo.value}&${queryString}`
 })
 
 // 支付地址
-const payUrl = `http://127.0.0.1:5173/payment/success`
+const payUrl = ref()
 </script>
 
 <template>
@@ -35,10 +48,13 @@ const payUrl = `http://127.0.0.1:5173/payment/success`
         <span class="icon iconfont icon-queren2"></span>
         <div class="tip">
           <p>订单提交成功！请尽快完成支付。</p>
-          <p>支付还剩 <span>24分30秒</span>, 超时后将取消订单</p>
+          <p>
+            支付还剩 <span>{{ formatTime }}</span
+            >, 超时后将取消订单
+          </p>
         </div>
         <div class="amount">
-          <span>应付总额：￥{{ payInfo.orderTotal }}</span>
+          <span>应付总额：￥{{ payInfo }}</span>
         </div>
       </div>
       <!-- 付款方式 -->
