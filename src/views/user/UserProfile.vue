@@ -1,7 +1,7 @@
 <script setup>
 import PageContainer from '@/views/component/PageContainer.vue'
-import { useUserInfoStore } from '@/stores'
-const userInfoStore = useUserInfoStore()
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 
 const rules = {
   nickname: [
@@ -12,10 +12,7 @@ const rules = {
       trigger: 'blur'
     }
   ],
-  email: [
-    { required: true, message: '请输入用户邮箱', trigger: 'blur' },
-    { type: 'email', message: '邮箱格式不正确', trigger: 'blur' }
-  ]
+  sex: [{ required: true, message: '请输入用户性别', trigger: 'blur' }]
 }
 </script>
 <template>
@@ -23,23 +20,20 @@ const rules = {
     <el-row>
       <el-col :span="12">
         <el-form
-          :model="useUserInfoStore.userInfo"
+          :model="userStore.userInfo"
           :rules="rules"
           ref="formRef"
           label-width="100px"
           size="large"
         >
           <el-form-item label="登录ID">
-            <el-input
-              v-model="userInfoStore.userInfo.userId"
-              disabled
-            ></el-input>
+            <el-input v-model="userStore.userInfo.userId" disabled></el-input>
           </el-form-item>
           <el-form-item label="用户名" prop="nickname">
-            <el-input v-model="userInfoStore.userInfo.userName"></el-input>
+            <el-input v-model="userStore.userInfo.userName"></el-input>
           </el-form-item>
-          <el-form-item label="用户性别" prop="email">
-            <el-input v-model="userInfoStore.userInfo.userSex"></el-input>
+          <el-form-item label="用户性别" prop="sex">
+            <el-input v-model="userStore.userInfo.userSex"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary">提交修改</el-button>
