@@ -3,8 +3,11 @@
 <template>
   <div class="home-banner">
     <el-carousel height="600px">
-      <el-carousel-item v-for="item in 4" :key="item">
-        <img src="" alt="" />
+      <el-carousel-item>
+        <img src="@/assets/1.jpg" alt="" />
+      </el-carousel-item>
+      <el-carousel-item>
+        <img src="@/assets/2.png" alt="" />
       </el-carousel-item>
     </el-carousel>
   </div>
