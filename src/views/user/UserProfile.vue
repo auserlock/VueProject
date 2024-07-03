@@ -27,7 +27,7 @@ const rules = {
           size="large"
         >
           <el-form-item label="登录ID">
-            <el-input v-model="userStore.userInfo.userId" disabled></el-input>
+            <el-input v-model="userStore.id" disabled></el-input>
           </el-form-item>
           <el-form-item label="用户名" prop="nickname">
             <el-input v-model="userStore.userInfo.userName"></el-input>

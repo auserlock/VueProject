@@ -8,7 +8,6 @@ export const useUserStore = defineStore(
     const id = ref('')
     const password = ref('')
     const userInfo = ref({
-      userId: 1234532,
       userName: 'asdd',
       userSex: '男'
     })

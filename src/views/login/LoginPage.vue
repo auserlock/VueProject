@@ -76,6 +76,7 @@ const login = async () => {
   // console.log(res)
 
   useStore.setToken(res.data.data)
+  useStore.setId(formModel.value.userId)
   ElMessage.success('登陆成功')
 
   // 切换到主页面
@@ -193,7 +194,7 @@ onMounted(() => {
             show-word-limit
             v-model="formModel.userId"
             :prefix-icon="User"
-            placeholder="请输入用户名"
+            placeholder="请输入用户ID"
           ></el-input>
         </el-form-item>
         <el-form-item prop="password">

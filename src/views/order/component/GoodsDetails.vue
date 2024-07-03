@@ -1,14 +1,21 @@
 <script setup>
 import { businessGetFoodListService } from '@/api/food'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { ref, onMounted, computed } from 'vue'
 import { useBusinessTypeStore } from '@/stores'
+import { useCartStore } from '@/stores'
 import { Plus, Minus } from '@element-plus/icons-vue'
 const useTypeStore = useBusinessTypeStore()
+const useCart = useCartStore()
 const route = useRoute()
+const router = useRouter()
 
 const businessId = route.params.listID
 const foodList = ref([])
+
+const findIndexByFoodId = (foodId) => {
+  return foodList.value.findIndex((item) => item.foodId === foodId)
+}
 
 const previousPath = computed(() => {
   const pathArray = route.path.split('/')
@@ -25,31 +32,65 @@ const GetFoodList = async () => {
   }
 }
 
-// const useCart = useCartStore()
 const currentCart = ref({})
 
 const clickButtonPlus = (key) => {
-  if (currentCart.value[key] !== undefined) {
-    currentCart.value[key]++
+  if (
+    currentCart.value[key] !== undefined &&
+    currentCart.value[key].quantity !== undefined
+  ) {
+    // 如果已经存在 quantity 属性，则增加数量
+    currentCart.value[key].quantity++
   } else {
-    currentCart.value[key] = 1
+    // 否则从 foodList 中获取对应的商品信息，并设置 quantity 为 1
+    currentCart.value[key] = {
+      ...foodList.value[findIndexByFoodId(key)],
+      quantity: 1
+    }
   }
   // console.log(currentCart.value)
 }
 
 const clickButtonMinus = (key) => {
-  if (currentCart.value[key] !== 0) {
-    currentCart.value[key]--
-  } else {
-    currentCart.value[key] = 0
+  if (
+    currentCart.value[key] !== undefined &&
+    currentCart.value[key].quantity !== undefined
+  ) {
+    // 如果已经存在 quantity 属性，则减少数量，但要确保数量不小于 1
+    if (currentCart.value[key].quantity > 1) {
+      currentCart.value[key].quantity--
+    } else {
+      // 如果数量为 1，则从购物车中移除该商品
+      delete currentCart.value[key]
+    }
+    // console.log(currentCart.value)
   }
-  // console.log(currentCart.value)
 }
+
+const order = () => {
+  router.push('/order/cart')
+}
+
+const totalPrice = computed(() => {
+  let total = 0
+  // 防御性检查
+  if (!foodList.value || !currentCart.value) {
+    return total
+  }
+  for (const key in currentCart.value) {
+    total += currentCart.value[key].quantity * currentCart.value[key].foodPrice
+  }
+  return total
+})
 
 onMounted(() => {
   GetFoodList().then((res) => {
     foodList.value = res
   })
+  useCart.addOrUpdateMerchant(businessId, currentCart.value)
+  if (useCart.cartList[businessId] !== undefined) {
+    currentCart.value = useCart.cartList[businessId]
+  }
 })
 </script>
 
@@ -87,11 +128,26 @@ onMounted(() => {
             :circle="true"
             :icon="Minus"
             @click="clickButtonMinus(goods.foodId)"
-            v-show="currentCart[goods.foodId] > 0"
+            v-show="
+              currentCart[goods.foodId] && currentCart[goods.foodId].quantity
+                ? currentCart[goods.foodId].quantity
+                : 0 > 0
+            "
             class="MinusButton"
           />
-          <div v-show="currentCart[goods.foodId] > 0" class="NumberInput">
-            {{ currentCart[goods.foodId] }}
+          <div
+            v-show="
+              currentCart[goods.foodId] && currentCart[goods.foodId].quantity
+                ? currentCart[goods.foodId].quantity
+                : 0 > 0
+            "
+            class="NumberInput"
+          >
+            {{
+              currentCart[goods.foodId] && currentCart[goods.foodId].quantity
+                ? currentCart[goods.foodId].quantity
+                : 0
+            }}
           </div>
           <el-button
             type="primary"
@@ -103,6 +159,12 @@ onMounted(() => {
         </div>
       </li>
     </ul>
+  </div>
+  <div>
+    {{ totalPrice }}
+    <el-button type="primary" @click="order" class="orderbutton"
+      >结算</el-button
+    >
   </div>
 </template>
 

@@ -18,7 +18,14 @@ export const useCartStore = defineStore(
         }
       }
     }
-    return { cartList, addOrUpdateMerchant }
+    const removeAll = () => {
+      cartList.value = {}
+    }
+    return {
+      cartList,
+      addOrUpdateMerchant,
+      removeAll
+    }
   },
   {
     persist: true
