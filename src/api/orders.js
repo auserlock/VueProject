@@ -2,14 +2,16 @@ import request from '@/utils/request'
 
 // 请求路径：/orders/add
 // 请求方式：POST
-// 请求参数格式：queryString
+// 请求参数格式：querystring
 // 参数名称	说明	类型	是否必须	备注
 // businessId	商家编号	number	是
 // daId	送货地址Id	number	是
 export const ordersAddService = (businessId, daId) => {
-  return request.post('/orders/add', {
-    businessId,
-    daId
+  return request.post('/orders/add', null, {
+    params: {
+      businessId,
+      daId
+    }
   })
 }
 

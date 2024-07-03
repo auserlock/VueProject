@@ -5,6 +5,7 @@ export const useBusinessStore = defineStore(
   'business',
   () => {
     const BusinessInfo = ref({})
+    const BusinessName = ref({})
     const hasFetched = ref(false)
 
     const setBusiness = (categoryId, newBusiness) => {
@@ -12,6 +13,12 @@ export const useBusinessStore = defineStore(
         BusinessInfo.value[categoryId] = []
       }
       BusinessInfo.value[categoryId].push(newBusiness)
+
+      const businessNameWithoutParentheses = newBusiness.businessName
+        .replace(/\s*（.*?）\s*/g, '')
+        .trim()
+      BusinessName.value[newBusiness.businessId] =
+        businessNameWithoutParentheses
     }
 
     const setHasFetched = () => {
@@ -29,10 +36,12 @@ export const useBusinessStore = defineStore(
     const removeAll = () => {
       BusinessInfo.value = {}
       hasFetched.value = false
+      BusinessName.value = {}
     }
 
     return {
       BusinessInfo,
+      BusinessName,
       hasFetched,
       setBusiness,
       setHasFetched,

@@ -5,6 +5,7 @@ export const useCartStore = defineStore(
   'cart',
   () => {
     const cartList = ref({})
+
     const addOrUpdateMerchant = (merchantId, products) => {
       if (!cartList.value[merchantId]) {
         // 如果商户不存在，添加新的商户

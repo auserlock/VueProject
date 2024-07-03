@@ -1,3 +1,4 @@
+// 路由配置
 import { useUserStore } from '@/stores'
 import {
   createRouter,
@@ -46,6 +47,18 @@ const router = createRouter({
         {
           path: '/user/password',
           component: () => import('@/views/user/UserPassword.vue')
+        },
+        {
+          path: '/checkout',
+          component: () => import('@/views/checkout/CheckoutOrder.vue')
+        },
+        {
+          path: '/payment',
+          component: () => import('@/views/payment/PayOrder.vue')
+        },
+        {
+          path: '/payment/success',
+          component: () => import('@/views/payment/PaySuccess.vue')
         }
       ]
     }

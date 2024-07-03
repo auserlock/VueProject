@@ -1,10 +1,13 @@
 <script setup>
 import { businessGetByTypeService } from '@/api/business'
-import { useBusinessStore } from '@/stores'
+import { getAddressListService } from '@/api/address'
+import { ordersGetService } from '@/api/orders'
+import { useBusinessStore, useUserStore, useOrderStore } from '@/stores'
 import { onMounted } from 'vue'
 // import { getUserInfoService } from '@/api/userInfo'
 const businessStore = useBusinessStore()
-// const userInfoStore = useUserInfoStore()
+const userStore = useUserStore()
+const orderStore = useOrderStore()
 
 import BusinessCategory from './component/BusinessCategory.vue'
 import BusinessBanner from './component/BusinessBanner.vue'
@@ -18,12 +21,22 @@ onMounted(async () => {
           businessStore.setBusiness(i, item)
         })
         businessStore.setHasFetched()
-        // const userInfo = await getUserInfoService()
-        // userInfoStore.userInfo = userInfo.data.data
       } catch (error) {
         console.error('Failed to fetch business list:', error)
       }
     }
+  }
+  try {
+    const res = await getAddressListService()
+    userStore.setAddressList(res.data.data)
+  } catch (error) {
+    console.error('Failed to fetch address list:', error)
+  }
+  try {
+    const res = await ordersGetService()
+    orderStore.setOrders(res.data.data)
+  } catch (error) {
+    console.error('Failed to fetch orders:', error)
   }
 })
 </script>

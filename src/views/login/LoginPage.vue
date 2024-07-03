@@ -2,17 +2,18 @@
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
 import { userRegisterService, userLoginService } from '@/api/user'
-
 import { useRouter } from 'vue-router'
 import { useBusinessStore } from '@/stores'
 import { ElMessage } from 'element-plus'
-import { useUserStore } from '@/stores'
+import { useUserStore, useCartStore } from '@/stores'
 import { onMounted } from 'vue'
+
 const isRegister = ref(false)
 const form = ref()
 const router = useRouter()
 const useStore = useUserStore()
 const businessStore = useBusinessStore()
+const cartStore = useCartStore()
 
 let isChangeFromRegisterSuccess = false
 
@@ -62,7 +63,6 @@ const register = async () => {
   alert('注册成功：请记住您的ID号')
   alert(res.data.data)
   useStore.setId(res.data.data)
-  useStore.setPassword(formModel.value.password)
   isChangeFromRegisterSuccess = true
   isRegister.value = false
 }
@@ -108,13 +108,13 @@ onMounted(() => {
       password: useStore.password
     }
     useStore.removeToken()
-    businessStore.removeAll()
   } else {
     useStore.removeToken()
     useStore.removeId()
     useStore.removePassword()
-    businessStore.removeAll()
   }
+  businessStore.removeAll()
+  cartStore.removeAll()
 })
 </script>
 

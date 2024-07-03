@@ -14,18 +14,41 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores'
 import { useBusinessStore } from '@/stores'
 import { useBusinessTypeStore } from '@/stores'
+import { useCartStore, useOrderStore } from '@/stores'
 import { RouterLink } from 'vue-router'
+import { cartDeleteService } from '@/api/cart'
 // import avatar from '@/assets/default.png'
 const router = useRouter()
 const useStore = useUserStore()
 const businessStore = useBusinessStore()
 const businessTypeStore = useBusinessTypeStore()
+const cartStore = useCartStore()
+const orderStore = useOrderStore()
 
-const handleCommand = (key) => {
+const handleCommand = async (key) => {
   if (key === 'logout') {
-    router.push('/login') //退出操作
-    useStore.removeToken()
-    businessStore.removeAll() //清空business数据
+    if (window.confirm('确定要退出登录吗？')) {
+      // 用户点击了确认按钮
+      try {
+        for (const key in cartStore.cartList) {
+          if (Object.keys(cartStore.cartList[key]).length > 0) {
+            for (const item in cartStore.cartList[key]) {
+              await cartDeleteService(
+                cartStore.cartList[key][item].foodId,
+                cartStore.cartList[key][item].businessId
+              )
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to add address:', error)
+      }
+      router.push('/login') // 退出操作：跳转到登录页面
+      useStore.removeToken() // 移除 token
+      businessStore.removeAll() // 清空 business 数据
+      cartStore.removeAll() // 清空购物车数据
+      orderStore.removeOrders() // 清空订单数据
+    }
   } else {
     router.push(`/user/${key}`)
   }

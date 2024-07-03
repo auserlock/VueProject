@@ -1,5 +1,4 @@
 import request from '@/utils/request'
-
 // 请求路径：/cart/set
 // 请求方式：POST
 // 请求参数格式：json
@@ -8,11 +7,13 @@ import request from '@/utils/request'
 // businessId	商家编号	number	是
 // quantity	食物数量	number	是
 export const cartSetService = (foodId, businessId, quantity) => {
-  return request.post('/cart/set', {
+  const requestData = {
     foodId,
     businessId,
     quantity
-  })
+  }
+  // console.log(requestData)
+  return request.post('/cart/set', requestData)
 }
 
 // 请求路径：/cart/delete

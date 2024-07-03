@@ -13,6 +13,7 @@ export const useUserStore = defineStore(
     })
     const userAddr = ref({})
     const remStatus = ref(false)
+
     const setToken = (newToken) => {
       token.value = newToken
     }
@@ -31,6 +32,13 @@ export const useUserStore = defineStore(
     const removePassword = () => {
       password.value = ''
     }
+    const setAddressList = (newAddr) => {
+      userAddr.value = newAddr
+    }
+    const removeAddressList = () => {
+      userAddr.value = {}
+    }
+
     return {
       id,
       token,
@@ -43,7 +51,9 @@ export const useUserStore = defineStore(
       setToken,
       removeToken,
       setPassword,
-      removePassword
+      removePassword,
+      setAddressList,
+      removeAddressList
     }
   },
   {

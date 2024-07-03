@@ -15,7 +15,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
   (config) => {
     // TODO 2. 携带token
-    const useStore = useUserStore
+    const useStore = useUserStore()
     if (useStore.token) {
       config.headers.Authorization = useStore.token
     }
@@ -39,7 +39,7 @@ instance.interceptors.response.use(
     if (err.response?.status === 401) {
       router.push('/login')
     }
-    ElMessage.error(err.data.message || '服务异常')
+    alert(err.data.message || '服务异常')
     return Promise.reject(err)
   }
 )
