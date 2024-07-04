@@ -1,14 +1,22 @@
 <script setup>
 import { useRoute, useRouter } from 'vue-router'
 import { ordersUpdateService } from '@/api/orders'
+import { cartDeleteService } from '@/api/cart'
 import { useOrderStore } from '@/stores'
+import { onBeforeUnmount } from 'vue'
+import { useCartStore } from '@/stores'
 
 const route = useRoute()
 const router = useRouter()
 const orderStore = useOrderStore()
+const cartStore = useCartStore()
 
-const updateOrder = async () => {
-  let ids = route.query.id
+const updateOrder = async () => {}
+
+let ids = route.query.id
+
+onBeforeUnmount(async () => {
+  console.log(ids)
   if (typeof ids === 'string') {
     ids = ids.split(',') // 将逗号分隔的字符串转换为数组
   } else if (!Array.isArray(ids)) {
@@ -16,7 +24,7 @@ const updateOrder = async () => {
   }
   try {
     for (let i = 0; i < ids.length; i++) {
-      await ordersUpdateService(ids[i])
+      await ordersUpdateService(ids[i], 1)
     }
   } catch (error) {
     console.error('Failed to update order:', error)
@@ -25,14 +33,29 @@ const updateOrder = async () => {
     orderStore.orders.map((order) => {
       for (let i = 0; i < ids.length; i++) {
         if (order.orderId == ids[i]) {
-          order.orderStatus = 1
+          order.orderState = 1
           break
         }
       }
       return order
     })
   )
-}
+  try {
+    for (const key in cartStore.cartList) {
+      if (Object.keys(cartStore.cartList[key]).length > 0) {
+        for (const item in cartStore.cartList[key]) {
+          await cartDeleteService(
+            cartStore.cartList[key][item].foodId,
+            cartStore.cartList[key][item].businessId
+          )
+        }
+      }
+    }
+  } catch (error) {
+    console.error('Failed to add address:', error)
+  }
+  cartStore.removeAll()
+})
 </script>
 
 <template>

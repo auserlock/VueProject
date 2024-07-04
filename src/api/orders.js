@@ -26,12 +26,13 @@ export const ordersGetService = () => {
 // 请求参数格式：json
 // 参数名称	说明	类型	是否必须	备注
 // orderId	订单编号	number	是	不可变
-// businessId	商家编号	number	是	不可变
-// daId	送货地址编号	number	是
 // orderState	订单状态	number	是
 export const ordersUpdateService = (orderId, orderState) => {
-  return request.put('/orders/update', {
+  const data = JSON.stringify({
     orderId,
     orderState
+  })
+  return request.put('/orders/update', data, {
+    headers: { 'Content-Type': 'application/json' }
   })
 }

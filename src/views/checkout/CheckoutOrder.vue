@@ -6,7 +6,6 @@ import { computed, ref } from 'vue'
 import { addAddressService, getAddressListService } from '@/api/address'
 import { useRouter } from 'vue-router'
 import { ordersAddService } from '@/api/orders'
-import { cartDeleteService } from '@/api/cart'
 const userStore = useUserStore()
 const cartStore = useCartStore()
 const showDialog = ref(false)
@@ -95,21 +94,7 @@ const submitOrder = async () => {
   } catch (error) {
     console.error('Failed to add address:', error)
   }
-  try {
-    for (const key in cartStore.cartList) {
-      if (Object.keys(cartStore.cartList[key]).length > 0) {
-        for (const item in cartStore.cartList[key]) {
-          await cartDeleteService(
-            cartStore.cartList[key][item].foodId,
-            cartStore.cartList[key][item].businessId
-          )
-        }
-      }
-    }
-  } catch (error) {
-    console.error('Failed to add address:', error)
-  }
-  cartStore.removeAll()
+
   router.push({
     path: '/payment',
     query: {
