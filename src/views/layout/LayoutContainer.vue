@@ -129,7 +129,7 @@ const handleCommand = async (key) => {
         </ul>
         <el-dropdown placement="bottom-end" @command="handleCommand">
           <span class="el-dropdown__box">
-            <el-avatar />
+            <el-avatar :src="useStore.userInfo.userImg" />
             <el-icon>
               <CaretBottom />
             </el-icon>

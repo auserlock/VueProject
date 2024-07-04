@@ -1,5 +1,6 @@
 <script setup>
 import { businessGetByTypeService } from '@/api/business'
+import { getUserInfoService } from '@/api/userInfo'
 import { getAddressListService } from '@/api/address'
 import { ordersGetService } from '@/api/orders'
 import { useBusinessStore, useUserStore, useOrderStore } from '@/stores'
@@ -37,6 +38,12 @@ onMounted(async () => {
     orderStore.setOrders(res.data.data)
   } catch (error) {
     console.error('Failed to fetch orders:', error)
+  }
+  try {
+    const res = await getUserInfoService()
+    userStore.userInfo = res.data.data
+  } catch (error) {
+    console.error('Failed to fetch user info:', error)
   }
 })
 </script>

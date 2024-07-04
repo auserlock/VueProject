@@ -5,7 +5,7 @@ const useTypeStore = useBusinessTypeStore()
 import { useBusinessStore } from '@/stores'
 const businessStore = useBusinessStore()
 
-import GoosItem from '../GoosItem.vue'
+import GoodsItem from '../GoodsItem.vue'
 
 const route = useRoute()
 </script>
@@ -33,7 +33,7 @@ const route = useRoute()
         ]"
         :key="goods.businessId"
       >
-        <GoosItem :goods="goods"></GoosItem>
+        <GoodsItem :goods="goods"></GoodsItem>
       </li>
     </ul>
   </div>

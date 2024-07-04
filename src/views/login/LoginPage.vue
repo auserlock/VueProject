@@ -115,6 +115,7 @@ onMounted(() => {
   }
   businessStore.removeAll()
   cartStore.removeAll()
+  useStore.removeAll()
 })
 </script>
 

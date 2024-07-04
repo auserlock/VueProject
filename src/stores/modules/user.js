@@ -7,10 +7,7 @@ export const useUserStore = defineStore(
     const token = ref('')
     const id = ref('')
     const password = ref('')
-    const userInfo = ref({
-      userName: 'asdd',
-      userSex: '男'
-    })
+    const userInfo = ref({})
     const userAddr = ref({})
     const remStatus = ref(false)
 
@@ -38,7 +35,14 @@ export const useUserStore = defineStore(
     const removeAddressList = () => {
       userAddr.value = {}
     }
+    const removeUserInfo = () => {
+      userInfo.value = {}
+    }
 
+    const removeAll = () => {
+      removeUserInfo()
+      removeAddressList()
+    }
     return {
       id,
       token,
@@ -53,7 +57,7 @@ export const useUserStore = defineStore(
       setPassword,
       removePassword,
       setAddressList,
-      removeAddressList
+      removeAll
     }
   },
   {

@@ -11,7 +11,7 @@ const { formatTime, start } = useCountDown()
 const payInfo = ref(0)
 onMounted(async () => {
   start(15 * 1000)
-  payInfo.value = 0
+  payInfo.value = 5
   try {
     const res = await ordersGetService()
     orderStore.setOrders(res.data.data)
